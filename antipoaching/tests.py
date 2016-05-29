@@ -19,6 +19,15 @@ def create_media_object():
 
 # Create your tests here.
 class MediaAPITests(TestCase):
+
+	def setUp(self):
+		self.admin = User.objects.create_user('admin', 'admin@test.com', 'password123')
+		self.admin.save()
+
+		tokenRes = client.post('/v1/auth/', {'username': 'admin', 'password': 'password123'})
+
+		print tokenRes
+
 	def test_create_media_object(self):
 
 		response = client.post('/v1/media/', {
@@ -95,6 +104,15 @@ class MediaAPITests(TestCase):
 
 class EventTests(TestCase):
 
+	def setUp(self):
+		self.admin = User.objects.create_user('admin', 'admin@test.com', 'password123')
+		self.admin.save()
+
+		tokenRes = client.post('/v1/auth/', {'username': 'admin', 'password': 'password123'})
+		token = json.loads(tokenRes.content)
+
+		client.credentials(HTTP_AUTHORIZATION='Basic ' + token['token'])
+
 	def test_200_at_root(self):
 		response = client.get('/')
 		self.assertEqual(response.status_code, 200)
@@ -109,7 +127,7 @@ class EventTests(TestCase):
 
 	def test_getting_list_of_events(self):
 
-		response = client.get(API + 'v1/events/')
+		response = client.get('/v1/events/')
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('count' in response.data)
 		self.assertTrue('next' in response.data)
@@ -125,6 +143,5 @@ class AuthTests(TestCase):
 
 	def test_credentials(self):
 		response = client.post('/v1/auth/', {'username': 'admin', 'password': 'password123'})
-		print response.content
 		self.assertEqual(response.status_code, 200)
 
