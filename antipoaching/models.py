@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django_unixdatetimefield import UnixDateTimeField
+# import jsonfield
+from jsonfield import JSONField
 # Create your models here.
 
 
@@ -16,6 +18,10 @@ class Event(models.Model):
     timestamp = UnixDateTimeField(auto_now_add=True)
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
+    # media
+    # extra = jsonfield.JSONField()
+    extra = JSONField(null=True)
+
     #
     # email = models.EmailField(null=True, default="",blank=True)
     # type = models.CharField(('type'), choices=USERTYPES, default='r', max_length=1)
