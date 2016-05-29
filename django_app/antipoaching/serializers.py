@@ -1,4 +1,3 @@
-
 class SnippetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Snippet
