@@ -4,4 +4,8 @@ from django.contrib import admin
 
 
 from .models import Event
-admin.site.register(Event )
+# admin.site.register(Event )
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('severity', 'description', 'timestamp')
+admin.site.register(Event, EventAdmin)

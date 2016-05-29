@@ -16,6 +16,17 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from antipoaching import views as antipoachingviews
+# from snippets import views as snippetviews
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+# router.register(r'users', views.UserViewSet)
+# router.register(r'groups', views.GroupViewSet)
+router.register(r'v1/events', antipoachingviews.EventViewSet)
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 ]
+
+
