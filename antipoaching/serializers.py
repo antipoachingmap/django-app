@@ -1,7 +1,12 @@
+from .models import Event, Media
 from rest_framework import serializers
-from antipoaching.models import Media
+
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('__all__')
 
 class MediaSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Media
-		fields = ('id', 'description', 'format', 'timestamp', 'filename', 'filesize')
+		fields = ('__all__')
