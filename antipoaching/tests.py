@@ -17,12 +17,6 @@ def create_media_object():
 		filesize=500123
 	)
 
-def create_user():
-	return User.objects.create(
-			username='Richard Nixon',
-			password='I am not a crook'
-		)
-
 # Create your tests here.
 class MediaAPITests(TestCase):
 	def test_create_media_object(self):
@@ -125,8 +119,12 @@ class EventTests(TestCase):
 
 class AuthTests(TestCase):
 
+	def setUp(self):
+		self.admin = User.objects.create_user('admin', 'admin@test.com', 'password123')
+		self.admin.save()
+
 	def test_credentials(self):
-		create_user()
-		response = client.post('/v1/auth', {'username': 'Richard Nixon', 'password': 'I am not a crook'})
-		print response
+		response = client.post('/v1/auth/', {'username': 'admin', 'password': 'password123'})
+		print response.content
+		self.assertEqual(response.status_code, 200)
 
