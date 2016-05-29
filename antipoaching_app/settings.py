@@ -85,11 +85,7 @@ DATABASES = {
 }
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
-
-_MONGODB_NAME = 'antipoachingapp'
-_MONGODB_DATABASE_HOST = 'mongodb://localhost:27107'
-
-mongoengine.connect(_MONGODB_NAME, host=_MONGODB_DATABASE_HOST)
+mongoengine.connect('antipoachingapp', host='mongodb://localhost:27017')
 
 
 # Password validation
