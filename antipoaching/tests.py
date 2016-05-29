@@ -18,7 +18,12 @@ def create_media_object():
 	)
 
 # Create your tests here.
-class MediaAPITests(TestCase):
+class MediaTests(TestCase):
+
+	def setUp(self):
+		user = User.objects.create_user('admin', 'admin@test.com', 'password123')
+		user.save()
+		client.force_authenticate(user=user)
 
 	def test_create_media_object(self):
 
@@ -96,20 +101,16 @@ class MediaAPITests(TestCase):
 
 class EventTests(TestCase):
 
-	def test_200_at_root(self):
-		response = client.get('/')
-		self.assertEqual(response.status_code, 200)
-
-	def test_404_from_bad_url(self):
-		response = client.get('/asteroids/')
-		self.assertEqual(response.status_code, 404)
+	def setUp(self):
+		user = User.objects.create_user('admin', 'admin@test.com', 'password123')
+		user.save()
+		client.force_authenticate(user=user)
 
 	def test_200_for_events(self):
 		response = client.get('/v1/events/')
 		self.assertEqual(response.status_code, 200)
 
 	def test_getting_list_of_events(self):
-
 		response = client.get('/v1/events/')
 		self.assertEqual(response.status_code, 200)
 
