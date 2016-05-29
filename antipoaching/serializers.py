@@ -1,4 +1,4 @@
-class SnippetSerializer(serializers.ModelSerializer):
+class MediaSerializer(serializers.ModelSerializer):
   class Meta:
-    model = Snippet
-    fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
+    model = Media
+    fields = ('id', 'description', 'format', 'timestamp', 'filename', 'filesize')
