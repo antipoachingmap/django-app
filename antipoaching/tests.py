@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from rest_framework.test import APIClient
+from django.contrib.auth.models import User
 import json
 
 from .models import Media
@@ -15,6 +16,12 @@ def create_media_object():
 		filename='party_parrot',
 		filesize=500123
 	)
+
+def create_user():
+	return User.objects.create(
+			username='Richard Nixon',
+			password='I am not a crook'
+		)
 
 # Create your tests here.
 class MediaAPITests(TestCase):
@@ -105,3 +112,13 @@ class EventTests(TestCase):
 	def test_200_for_events(self):
 		response = client.get('/v1/events/')
 		self.assertEqual(response.status_code, 200)
+
+
+class AuthTests(TestCase):
+
+	def test_credentials(self):
+		create_user()
+		response = client.post('/v1/api-auth', {'username': 'Richard Nixon', 'password': 'I am not a crook'})
+		print response.content
+		# data = json.loads(response.content)
+		#self.assertEqual()
