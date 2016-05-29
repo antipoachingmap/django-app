@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+
 import mongoengine
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'media.apps.MediaConfig',
+    'media',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -85,13 +86,8 @@ DATABASES = {
 
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
-_MONGODB_USER = 'admin'
-_MONGODB_PASSWD = 'password123'
-_MONGODB_HOST = 'thehost'
-_MONGODB_NAME = 'thedb'
-_MONGODB_DATABASE_HOST = \
-    'mongodb://%s:%s@%s/%s' \
-    % (_MONGODB_USER, _MONGODB_PASSWD, _MONGODB_HOST, _MONGODB_NAME)
+_MONGODB_NAME = 'antipoachingapp'
+_MONGODB_DATABASE_HOST = 'mongodb://localhost:27107'
 
 mongoengine.connect(_MONGODB_NAME, host=_MONGODB_DATABASE_HOST)
 
