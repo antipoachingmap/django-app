@@ -38,11 +38,14 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'rest_framework',
+	'rest_framework.authtoken',
 	'antipoaching.apps.AntipoachingConfig',
 ]
 
 REST_FRAMEWORK = {
-	'DEFAULT_PERMISSION_CLASSES': []
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+    )
 }
 
 MIDDLEWARE_CLASSES = [
