@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class AntipoachingConfig(AppConfig):
-    name = 'antipoaching'
+	name = 'antipoaching'
