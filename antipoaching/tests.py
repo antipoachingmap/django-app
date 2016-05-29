@@ -2,18 +2,24 @@ from django.test import TestCase
 from django.test.utils import setup_test_environment
 from django.test import Client
 setup_test_environment()
-
-
 from .models import Event
+
+API = 'http://localhost:8000/'
 
 class EventTests(TestCase):
 
-	def test_403_at_root(self):
+	def test_200_at_root(self):
 		client = Client()
-		response = client.get('/')
-		self.assertEqual(response.status_code, 403)
+		response = client.get(API)
+		self.assertEqual(response.status_code, 200)
 
 	def test_404_from_bad_url(self):
 		client = Client()
-		response = client.get('/asteroids')
+		response = client.get(API + 'asteroids/')
 		self.assertEqual(response.status_code, 404)
+
+	def test_200_for_events(self):
+		client = Client()
+		response = client.get(API + 'v1/events/')
+		self.assertEqual(response.status_code, 200)
+
