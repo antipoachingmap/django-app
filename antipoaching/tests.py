@@ -4,7 +4,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth.models import User
 import json
 
-from .models import Media
+from .models import Media, Event
 
 client = APIClient()
 
@@ -25,7 +25,7 @@ class MediaTests(TestCase):
 		user.save()
 		client.force_authenticate(user=user)
 
-	def test_create_media_object(self):
+	def test_create_media(self):
 
 		response = client.post('/v1/media/', {
 			'description': 'A party parrot',
@@ -44,7 +44,8 @@ class MediaTests(TestCase):
 		self.assertEqual(data['filename'], 'party_parrot')
 		self.assertEqual(data['filesize'], 500123)
 
-	def test_list_media_objects(self):
+
+	def test_list_media(self):
 
 		create_media_object()
 
@@ -55,7 +56,8 @@ class MediaTests(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(len(data), 1)
 
-	def test_detail_media_object(self):
+
+	def test_detail_media(self):
 
 		record = create_media_object()
 
@@ -71,7 +73,7 @@ class MediaTests(TestCase):
 		self.assertEqual(data['filesize'], 500123)
 
 
-	def test_update_media_object(self):
+	def test_update_media(self):
 
 		record = create_media_object()
 
@@ -92,12 +94,23 @@ class MediaTests(TestCase):
 		self.assertEqual(data['filename'], 'party_pangolin')
 		self.assertEqual(data['filesize'], 500666)
 
-	def test_delete_media_object(self):
+
+	def test_delete_media(self):
 
 		record = create_media_object()
 
 		response = client.delete('/v1/media/' + str(record.id) + '/')
 		self.assertEqual(response.status_code, 204)
+
+def create_event_object():
+	return Event.objects.create(
+		description='Asteroid strike',
+		severity='c',
+		timestamp=1463322187,
+		lat=42.42,
+		long=101.45,
+		extra='{"someJson":"Some more json"}'
+	)
 
 class EventTests(TestCase):
 
@@ -106,13 +119,87 @@ class EventTests(TestCase):
 		user.save()
 		client.force_authenticate(user=user)
 
-	def test_200_for_events(self):
-		response = client.get('/v1/events/')
-		self.assertEqual(response.status_code, 200)
+	def test_create_event(self):
 
-	def test_getting_list_of_events(self):
+		response = client.post('/v1/events/', {
+			'description': 'Asteroid strike',
+			'severity': 'c',
+			'timestamp': 1463322187,
+			'lat': 42.42,
+			'long': 101.45,
+			'extra': '{"someJson":"Some more json"}'
+		})
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 201)
+		self.assertEqual(data['description'], 'Asteroid strike')
+		self.assertEqual(data['severity'], 'c')
+		self.assertEqual(data['timestamp'], 1463322187)
+		self.assertEqual(data['lat'], 42.42)
+		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
+
+
+	def test_list_events(self):
+
+		create_event_object()
+
 		response = client.get('/v1/events/')
+
+		data = json.loads(response.content)
+
 		self.assertEqual(response.status_code, 200)
+		self.assertEqual(len(data), 1)	
+
+
+	def test_detail_event(self):
+
+		record = create_event_object()
+
+		response = client.get('/v1/events/' + str(record.id) + '/')
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(data['description'], 'Asteroid strike')
+		self.assertEqual(data['severity'], 'c')
+		self.assertEqual(data['timestamp'], 1463322187)
+		self.assertEqual(data['lat'], 42.42)
+		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
+
+
+	def test_update_object(self):
+
+		record = create_event_object()
+
+		response = client.put('/v1/events/' + str(record.id) + '/', {
+			'description': 'Comet attack',
+			'severity': 'c',
+			'timestamp': 1463322187,
+			'lat': 42.42,
+			'long': 101.45,
+			'extra': '{"someJson":"Some more json"}'
+		})
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(data['description'], 'Comet attack')
+		self.assertEqual(data['severity'], 'c')
+		self.assertEqual(data['timestamp'], 1463322187)
+		self.assertEqual(data['lat'], 42.42)
+		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
+
+
+	def test_delete_event(self):
+
+		record = create_event_object()
+
+		response = client.delete('/v1/events/' + str(record.id) + '/')
+		self.assertEqual(response.status_code, 204)
 
 
 class AuthTests(TestCase):
@@ -124,4 +211,3 @@ class AuthTests(TestCase):
 	def test_credentials(self):
 		response = client.post('/v1/auth/', {'username': 'admin', 'password': 'password123'})
 		self.assertEqual(response.status_code, 200)
-
