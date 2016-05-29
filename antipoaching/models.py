@@ -16,7 +16,6 @@ class Event(models.Model):
     timestamp = UnixDateTimeField(auto_now_add=True)
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
-    # media
     extra = JSONField(null=True, default="")
 
 
@@ -26,5 +25,8 @@ class Media(models.Model):
 	timestamp = UnixDateTimeField()
 	filename = models.CharField(max_length=255)
 	filesize = models.BigIntegerField()
+	event = models.ForeignKey(
+        Event, null=True, related_name='media', on_delete=models.CASCADE,
+    )
 	class Meta:
 		ordering = ('timestamp',)

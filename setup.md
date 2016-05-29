@@ -8,7 +8,6 @@ source env/bin/activate  # On Windows use `env\Scripts\activate`
 pip install django
 pip install djangorestframework
 pip install UnixDateTimeField
-## pip install django-jsonfield
 pip install jsonfield
 
 
@@ -23,3 +22,7 @@ python manage.py migrate antipoaching
 python manage.py createsuperuser
 python ./manage.py runserver
 
+
+# TESTS
+
+python manage.py test antipoaching
