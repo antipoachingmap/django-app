@@ -4,7 +4,7 @@ from .models import Event, Media
 from rest_framework import permissions
 
 class EventViewSet(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
