@@ -9,3 +9,6 @@ from .models import Event
 class EventAdmin(admin.ModelAdmin):
     list_display = ('severity', 'description', 'timestamp')
 admin.site.register(Event, EventAdmin)
+
+from .models import Media
+admin.site.register(Media )

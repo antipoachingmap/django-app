@@ -4,8 +4,6 @@ from django.db import models
 from django_unixdatetimefield import UnixDateTimeField
 # import jsonfield
 from jsonfield import JSONField
-# Create your models here.
-
 
 
 
@@ -19,11 +17,14 @@ class Event(models.Model):
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
     # media
-    # extra = jsonfield.JSONField()
-    extra = JSONField(null=True)
+    extra = JSONField(null=True, default="")
 
-    #
-    # email = models.EmailField(null=True, default="",blank=True)
-    # type = models.CharField(('type'), choices=USERTYPES, default='r', max_length=1)
-    # def __str__(self):
-    #     return self.name
+
+class Media(models.Model):
+	description = models.TextField()
+	format = models.CharField(blank=False, max_length=3)
+	timestamp = UnixDateTimeField()
+	filename = models.CharField(max_length=255)
+	filesize = models.BigIntegerField()
+	class Meta:
+		ordering = ('timestamp',)
