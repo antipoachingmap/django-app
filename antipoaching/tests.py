@@ -3,7 +3,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 import json
 
-from .models import Media
+from .models import Media, Event
 
 client = APIClient()
 
@@ -16,7 +16,17 @@ def create_media_object():
 		filesize=500123
 	)
 
-# Create your tests here.
+def create_event():
+	return Event.objects.create(
+		description='Asteroid strike',
+		severity='c',
+		timestamp=1463322187,
+		lat=42.42,
+		long=101.45,
+		extra='{"someJson":"Some more json"}'
+	)
+
+
 class MediaAPITests(TestCase):
 	def test_create_media_object(self):
 
@@ -37,6 +47,7 @@ class MediaAPITests(TestCase):
 		self.assertEqual(data['filename'], 'party_parrot')
 		self.assertEqual(data['filesize'], 500123)
 
+
 	def test_list_media_objects(self):
 
 		create_media_object()
@@ -47,6 +58,7 @@ class MediaAPITests(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(len(data), 1)
+
 
 	def test_detail_media_object(self):
 
@@ -85,6 +97,7 @@ class MediaAPITests(TestCase):
 		self.assertEqual(data['filename'], 'party_pangolin')
 		self.assertEqual(data['filesize'], 500666)
 
+
 	def test_delete_media_object(self):
 
 		record = create_media_object()
@@ -92,25 +105,98 @@ class MediaAPITests(TestCase):
 		response = client.delete('/v1/media/' + str(record.id) + '/')
 		self.assertEqual(response.status_code, 204)
 
-class EventTests(TestCase):
+
+class EventAPITests(TestCase):
+
 
 	def test_200_at_root(self):
 		response = client.get('/')
 		self.assertEqual(response.status_code, 200)
 
+
 	def test_404_from_bad_url(self):
-		response = client.get('/asteroids/')
+		response = client.get('/asteroids')
 		self.assertEqual(response.status_code, 404)
 
-	def test_200_for_events(self):
-		response = client.get('/v1/events/')
-		self.assertEqual(response.status_code, 200)
-	def test_getting_list_of_events(self):
-		client = Client()
-		response = client.get(API + 'v1/events/')
-		self.assertEqual(response.status_code, 200)
-		self.assertTrue('count' in response.data)
-		self.assertTrue('next' in response.data)
-		self.assertTrue('previous' in response.data)
-		self.assertTrue('results' in response.data)
 
+	def test_create_event(self):
+
+		response = client.post('/v1/events/', {
+			'description': 'Asteroid strike',
+			'severity': 'c',
+			'timestamp': 1463322187,
+			'lat': 42.42,
+			'long': 101.45,
+			'extra': '{"someJson":"Some more json"}'
+		})
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 201)
+		self.assertEqual(data['description'], 'Asteroid strike')
+		self.assertEqual(data['severity'], 'c')
+		self.assertEqual(data['timestamp'], 1463322187)
+		self.assertEqual(data['lat'], 42.42)
+		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
+
+
+	def test_list_events(self):
+
+		create_event()
+
+		response = client.get('/v1/events/')
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(len(data), 1)
+
+
+	def test_detail_event(self):
+
+		record = create_event()
+
+		response = client.get('/v1/events/' + str(record.id) + '/')
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(data['description'], 'Asteroid strike')
+		self.assertEqual(data['severity'], 'c')
+		self.assertEqual(data['timestamp'], 1463322187)
+		self.assertEqual(data['lat'], 42.42)
+		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
+
+
+	def test_event_object(self):
+
+		record = create_event()
+
+		response = client.put('/v1/events/' + str(record.id) + '/', {
+			'description': 'Comet attack',
+			'severity': 'c',
+			'timestamp': 1463322187,
+			'lat': 42.42,
+			'long': 101.45,
+			'extra': '{"someJson":"Some more json"}'
+		})
+
+		data = json.loads(response.content)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(data['description'], 'Comet attack')
+		self.assertEqual(data['severity'], 'c')
+		self.assertEqual(data['timestamp'], 1463322187)
+		self.assertEqual(data['lat'], 42.42)
+		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
+
+
+	def test_delete_event(self):
+
+		record = create_event()
+
+		response = client.delete('/v1/events/' + str(record.id) + '/')
+		self.assertEqual(response.status_code, 204)
