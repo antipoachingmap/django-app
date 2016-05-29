@@ -10,11 +10,10 @@ class MediaAPITests(TestCase):
 		response = client.post('/v1/media/', {
 			'description': 'A party parrot',
 			'format': 'png',
-			'timestamp': '2016-05-29T16:40',
+			'timestamp': 1463322187,
 			'filename': 'part_parrot',
 			'filesize': 500123
 		})
 
-		print response.content
-
 		self.assertEqual(response.status_code, 201)
+		self.assertEqual(response.content, '{"id":1,"description":"A party parrot","format":"png","timestamp":1463322187,"filename":"part_parrot","filesize":500123}')
