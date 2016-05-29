@@ -12,4 +12,4 @@ class Media(models.Model):
 	filesize = models.BigIntegerField()
 
 	class Meta:
-		ordering = ('created',)
+		ordering = ('timestamp',)
