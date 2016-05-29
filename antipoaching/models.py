@@ -19,5 +19,8 @@ class Media(models.Model):
 	timestamp = models.IntegerField()
 	filename = models.CharField(max_length=255)
 	filesize = models.BigIntegerField()
+	event = models.ForeignKey(
+        Event, null=True, related_name='media', on_delete=models.CASCADE,
+    )
 	class Meta:
 		ordering = ('timestamp',)

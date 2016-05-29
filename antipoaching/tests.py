@@ -105,3 +105,12 @@ class EventTests(TestCase):
 	def test_200_for_events(self):
 		response = client.get('/v1/events/')
 		self.assertEqual(response.status_code, 200)
+	def test_getting_list_of_events(self):
+		client = Client()
+		response = client.get(API + 'v1/events/')
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('count' in response.data)
+		self.assertTrue('next' in response.data)
+		self.assertTrue('previous' in response.data)
+		self.assertTrue('results' in response.data)
+
