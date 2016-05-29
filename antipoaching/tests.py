@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from rest_framework.test import APIClient
 import json
 
@@ -91,3 +92,16 @@ class MediaAPITests(TestCase):
 		response = client.delete('/v1/media/' + str(record.id) + '/')
 		self.assertEqual(response.status_code, 204)
 
+class EventTests(TestCase):
+
+	def test_200_at_root(self):
+		response = client.get('/')
+		self.assertEqual(response.status_code, 200)
+
+	def test_404_from_bad_url(self):
+		response = client.get('/asteroids/')
+		self.assertEqual(response.status_code, 404)
+
+	def test_200_for_events(self):
+		response = client.get('/v1/events/')
+		self.assertEqual(response.status_code, 200)
