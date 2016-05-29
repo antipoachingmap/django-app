@@ -27,7 +27,10 @@ router.register(r'v1/events', antipoachingviews.EventViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
 	url(r'^', include('antipoaching.urls')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
+    url(r'^users/$', antipoachingviews.UserList.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)/$', antipoachingviews.UserDetail.as_view()),
 ]
 
 

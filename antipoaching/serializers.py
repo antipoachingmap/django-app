@@ -1,5 +1,15 @@
 from .models import Event
 from rest_framework import serializers
+from django.contrib.auth.models import User
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+	events = serializers.PrimaryKeyRelatedField(many=True, queryset=Event.objects.all())
+
+	class Meta:
+		model = Userfields = ('id', 'username', 'events')
+
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

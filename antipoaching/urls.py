@@ -4,6 +4,7 @@ from django.conf.urls import url
 from antipoaching import views
 
 # app_name = 'events'
+
 # urlpatterns = [
     # url(r'^$', views.index, name='index'),
     # url(r'^$', views.events, name='index'),

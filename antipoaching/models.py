@@ -17,7 +17,6 @@ class Event(models.Model):
     lat = models.FloatField(default=0)
     long = models.FloatField(default=0)
     # media
-    # extra = jsonfield.JSONField()
     extra = JSONField(null=True, default="")
 
 
