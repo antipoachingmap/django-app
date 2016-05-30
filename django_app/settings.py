@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 
 DATABASES = {
 	'default': {
-		'ENGINE': '',
+		'ENGINE': 'django.db.backends.dummy',
 	}
 }
 connect('antipoachingapp', host='localhost', port=27017)
