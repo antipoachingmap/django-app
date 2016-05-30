@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework_mongoengine import viewsets
 from antipoaching.serializers import EventSerializer, MediaSerializer
-from .models import Event, Media
+from antipoaching.models import Event, Media
 from rest_framework import permissions
+
 
 class EventViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)

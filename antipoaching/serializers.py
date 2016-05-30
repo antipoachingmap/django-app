@@ -1,12 +1,12 @@
 from .models import Event, Media
-from rest_framework import serializers
+from rest_framework_mongoengine import serializers
 
-class EventSerializer(serializers.HyperlinkedModelSerializer):
+
+class EventSerializer(serializers.DocumentSerializer):
     class Meta:
         model = Event
-        fields = ('__all__')
+        depth = 2
 
-class MediaSerializer(serializers.ModelSerializer):
+class MediaSerializer(serializers.DocumentSerializer):
 	class Meta:
 		model = Media
-		fields = ('__all__')

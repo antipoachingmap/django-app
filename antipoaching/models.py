@@ -1,26 +1,22 @@
-from __future__ import unicode_literals
+from mongoengine import *
 
-from django.db import models
-from jsonfield import JSONField
 
-SEVERITY_CHOICES = [('c', "critical"), ('w', "warning"), ('i', "info")]
+class Extra(EmbeddedDocument):
+	animals = DictField()
+	details = StringField()
 
-class Event(models.Model):
-    description = models.TextField(max_length=500, default='')
-    severity = models.CharField(('severity'), choices=SEVERITY_CHOICES, default='i', max_length=1)
-    timestamp = models.IntegerField()
-    lat = models.FloatField(default=0)
-    long = models.FloatField(default=0)
-    extra = JSONField(null=True, default="")
+class Event(Document):
+    description = StringField()
+    severity = StringField()
+    timestamp = IntField()
+    lat = FloatField(default=0)
+    lng = FloatField(default=0)
+    extra = EmbeddedDocumentField(Extra)
 
-class Media(models.Model):
-	description = models.TextField()
-	format = models.CharField(blank=False, max_length=3)
-	timestamp = models.IntegerField()
-	filename = models.CharField(max_length=255)
-	filesize = models.BigIntegerField()
-	event = models.ForeignKey(
-        Event, null=True, related_name='media', on_delete=models.CASCADE,
-    )
-	class Meta:
-		ordering = ('timestamp',)
+class Media(Document):
+	description = StringField()
+	format = StringField()
+	timestamp = IntField()
+	filename = StringField()
+	filesize = IntField()
+	event = ReferenceField('Event')

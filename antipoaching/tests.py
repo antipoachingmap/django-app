@@ -108,7 +108,7 @@ def create_event_object():
 		severity='c',
 		timestamp=1463322187,
 		lat=42.42,
-		long=101.45,
+		lng=101.45,
 		extra='{"someJson":"Some more json"}'
 	)
 
@@ -126,7 +126,7 @@ class EventTests(TestCase):
 			'severity': 'c',
 			'timestamp': 1463322187,
 			'lat': 42.42,
-			'long': 101.45,
+			'lng': 101.45,
 			'extra': '{"someJson":"Some more json"}'
 		})
 
@@ -137,7 +137,7 @@ class EventTests(TestCase):
 		self.assertEqual(data['severity'], 'c')
 		self.assertEqual(data['timestamp'], 1463322187)
 		self.assertEqual(data['lat'], 42.42)
-		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['lng'], 101.45)
 		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
 
 
@@ -166,7 +166,7 @@ class EventTests(TestCase):
 		self.assertEqual(data['severity'], 'c')
 		self.assertEqual(data['timestamp'], 1463322187)
 		self.assertEqual(data['lat'], 42.42)
-		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['lng'], 101.45)
 		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
 
 
@@ -179,7 +179,7 @@ class EventTests(TestCase):
 			'severity': 'c',
 			'timestamp': 1463322187,
 			'lat': 42.42,
-			'long': 101.45,
+			'lng': 101.45,
 			'extra': '{"someJson":"Some more json"}'
 		})
 
@@ -190,7 +190,7 @@ class EventTests(TestCase):
 		self.assertEqual(data['severity'], 'c')
 		self.assertEqual(data['timestamp'], 1463322187)
 		self.assertEqual(data['lat'], 42.42)
-		self.assertEqual(data['long'], 101.45)
+		self.assertEqual(data['lng'], 101.45)
 		self.assertEqual(data['extra'], '{"someJson":"Some more json"}')
 
 

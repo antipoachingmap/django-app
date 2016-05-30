@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from antipoaching import views as antipoachingviews
-from rest_framework import routers
+from rest_framework_mongoengine import routers
 from rest_framework.authtoken import views as authviews
 
 router = routers.DefaultRouter()
